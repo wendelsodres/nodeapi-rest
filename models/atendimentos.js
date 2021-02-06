@@ -66,6 +66,33 @@ class Atendimento {
             }
         })
     }
+
+    altera(id,valor,response){
+        if(valor.data){
+            valor.data = moment(valor.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm')
+        }
+        const sql = 'UPDATE atendimentos SET ? WHERE id= ?'
+
+        conexao.query(sql, [valor,id], (erro, result) => {
+            if(erro){
+                response.status(400).json(erro)
+            }else {
+                response.status(200).json(result)
+            }
+        })
+    }
+
+    delete(id, response){
+        const sql = 'DELETE FROM atendimentos where id= ?'
+
+        conexao.query(sql,id, (erro, result) => {
+            if(erro){
+                response.status(400).json(erro)
+            }else {
+                response.status(200).json({id})
+            }
+        })
+    }
 }
 
 module.exports = new Atendimento
